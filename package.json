@@ -1,0 +1,22 @@
+{
+  "name": "mhs-bandsintown",
+  "version": "1.0.0",
+  "description": "A helper to connect to the BandsInTown API and return data",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/benwatsonuk/mhs-bandsintown.git"
+  },
+  "keywords": [
+    "BandsInTown"
+  ],
+  "author": "Ben Watson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/benwatsonuk/mhs-bandsintown/issues"
+  },
+  "homepage": "https://github.com/benwatsonuk/mhs-bandsintown#readme"
+}
