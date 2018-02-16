@@ -7,10 +7,16 @@ var https = require("https");
 
 module.exports = function (artistName, appId) {
 
-  var apiUrl  = "https://rest.bandsintown.com/artists/" + artistName + "/events?app_id=" + appId;
+  if (artistName == null) return false;
+  appId = appId || randomString();
+
+  var apiUrl = "https://rest.bandsintown.com/artists/" + artistName + "/events?app_id=" + appId;
+
+  function randomString() {
+    return Math.random().toString(36).substring(7);
+  }
+
   var request = https.get(apiUrl, function (response) {
-    // data is streamed in chunks from the server
-    // so we have to handle the "data" event
     var buffer = "",
         data,
         route;
@@ -24,7 +30,7 @@ module.exports = function (artistName, appId) {
       return data
     });
 
-  })
+  });
 
   return request
 
