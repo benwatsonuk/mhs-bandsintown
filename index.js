@@ -1,40 +1,82 @@
 /**
- * This module will connect to the BandsInTown API and return event data
- * @param artistName = artist name registered with BandsInTown
- * @param appId = unique id required by BandsInTown
+ * This module connects to the BandsInTown API and returns event data for an artist
  */
-var https = require("https");
+// var http           = require("http");
+var https           = require("https");
+// var mhs_bandsintown = null
 
-module.exports = function (artistName, appId) {
+makeAppId = function () {
+  return Math.random().toString(36).substring(7);
+}
 
-  if (artistName == null) return false;
-  appId = appId || randomString();
+/**
+ * Get API response
+ * @param  {String} apiUrl - URL of the API to retrieve
+ * @return (dependent upon request)
+ */
+getApi = function (apiUrl) {
+  https.get(apiUrl, res => {
+    res.setEncoding("utf8");
+    let body = "";
+    res.on("data", data => {
+      body += data;
+    })
+    ;
+    res.on("end", () => {
+      console.log(res)
+      body = JSON.parse(body);
+      return body
+    })
+    res.on("error", () => {
+      console.log('Error')
+      // @todo return res?
+      return "There was an error"
+    })
+  })
+}
+
+/**
+ * Get upcoming artist events
+ * @param  {String} artistName - string of the artist ID (must be registered with BandsInTown)
+ * @param  {Stirng} appId (optional) - unique ID required for API call. If not provided, a random token will be generated
+ * @return {Object} JSON response
+ */
+getArtistEvents = function (artistName, appId) {
 
   var apiUrl = "https://rest.bandsintown.com/artists/" + artistName + "/events?app_id=" + appId;
+  // var apiUrl = "http://localhost:3000/response.json";
+  console.log(apiUrl);
+  return getApi(apiUrl)
+}
 
-  function randomString() {
-    return Math.random().toString(36).substring(7);
-  }
+// @todo format events function
 
-  var request = https.get(apiUrl, function (response) {
-    var buffer = "",
-        data,
-        route;
+mhs_bandsintown = function (artistName, appId) {
+  if (artistName == null) return 'Artist ID is required';
+  appId = appId || makeAppId();
 
-    response.on("data", function (chunk) {
-      buffer += chunk;
-    });
+  return getArtistEvents(artistName, appId)
+}
 
-    response.on("end", function (err) {
-      data = JSON.parse(buffer);
-      return data
-    });
+module.exports = mhs_bandsintown
 
-  });
-
-  return request
-
-};
+// var request = https.get(apiUrl, function (response) {
+//   var buffer = "",
+//       data,
+//       route;
+//
+//   response.on("data", function (chunk) {
+//     buffer += chunk;
+//   });
+//
+//   response.on("end", function (err) {
+//     data = JSON.parse(buffer);
+//     console.log(data)
+//     return data
+//     // return 'Dave'
+//   });
+//
+// });
 
 // @todo write readme.md file
 // @todo write basic tests
