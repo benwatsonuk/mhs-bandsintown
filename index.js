@@ -45,7 +45,6 @@ getArtistEvents = function (artistName, appId) {
 
   var apiUrl = "https://rest.bandsintown.com/artists/" + artistName + "/events?app_id=" + appId;
   // var apiUrl = "http://localhost:3000/response.json";
-  console.log(apiUrl);
   return getApi(apiUrl)
 }
 
