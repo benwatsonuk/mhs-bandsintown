@@ -68,22 +68,34 @@ module.exports = {
     if (!artistName) return 'artistName is required';
     if (!appId) return 'appId is required';
     var apiUrl = "https://rest.bandsintown.com/artists/" + artistName + "/events?app_id=" + appId;
-    // return this.getApi(apiUrl)
     return this.getAxiosApi(apiUrl)
   },
 
-// @todo format events function
 
   mhs_bandsintown(artistName, appId)
   {
     if (artistName == null) return 'Artist ID is required';
     appId = appId || makeAppId();
 
-    return this.getArtistEvents(artistName, appId)
+    var theResponse = this.getArtistEvents(artistName, appId);
+    // if(theResponse.data === []) return 'No upcoming events'
+    return theResponse;
+    // @todo format options if successful
+    // @todo respond with error if unknown artist is supplied
+    // @todo return JSON if instructed
+
+    // console.log(res.response.data);
+    // if (res.response.data.errors[0]) {
+    //   return res.response.data.errors[0]
+    // } else {
+    //   return res.response.data
+    // }
+
+    console.log(theResponse)
+
   }
 
-}
-;
-
+};
+// @todo format events function
 // @todo write readme.md file
 // @todo write basic tests
