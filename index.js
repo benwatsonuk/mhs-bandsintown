@@ -75,14 +75,17 @@ module.exports = {
   mhs_bandsintown(artistName, appId)
   {
     if (artistName == null) return 'Artist ID is required';
-    appId = appId || makeAppId();
+    appId = appId || this.makeAppId();
 
-    var theResponse = this.getArtistEvents(artistName, appId);
+    var theResponse = this.getArtistEvents(artistName, appId)
     // if(theResponse.data === []) return 'No upcoming events'
     return theResponse;
-    // @todo format options if successful
     // @todo respond with error if unknown artist is supplied
     // @todo return JSON if instructed
+    // @todo format options if successful
+    // @todo add 'options' [] param which includes formatting type, appId etc. mhs_bandsintown(artistId, options)
+    // @todo store transient?
+    // @todo handle 404 and 500 errors
 
     // console.log(res.response.data);
     // if (res.response.data.errors[0]) {
@@ -91,7 +94,7 @@ module.exports = {
     //   return res.response.data
     // }
 
-    console.log(theResponse)
+    // console.log(theResponse)
 
   }
 
