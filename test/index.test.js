@@ -87,20 +87,20 @@ describe('mhs_bandsintown (main function)', () => {
 
   beforeEach(()=>{
     nock('https://rest.bandsintown.com')
-      .get('/artists/A%20Wilhelm%20Scream/events?app_id=AWS')
+      .get('/artists/A%20Wilhelm%20Scream/events')
+      .query(true)
       .reply(200, api_response.hasEvents());
   })
 
   it('Should fail if no artistId is supplied', () => {
     expect(testMe.mhs_bandsintown()).to.equal('Artist ID is required');
-    // expect(testMe.makeAppId()).to.have.lengthOf(5);
   });
 
   it('Should succeed if no appID is supplied - random string is generated', () => {
     return testMe.mhs_bandsintown('A Wilhelm Scream').then((res)=>{
-      // console.log(res)
-      // expect(typeof(theResponse)).to.equal('object');
-      // expect(theResponse[0].hasOwnProperty('id')).to.be.true;
+      expect(typeof(res.data)).to.equal('object');
+      expect(res.data[0].hasOwnProperty('id')).to.be.true;
+      expect(res.data[0]['artist_id']).to.equal('2121');
     })
   });
 
