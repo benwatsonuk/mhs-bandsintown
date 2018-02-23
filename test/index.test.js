@@ -61,7 +61,7 @@ describe('getArtistEvents', () => {
   it('Should return with 403 if unknown artist is supplied', () => {
     nock('https://rest.bandsintown.com')
       .get('/artists/234234/events?app_id=123')
-      .reply(403, api_response.unkownArtist());
+      .reply(403, api_response.unknownArtist());
     return testMe.getArtistEvents('234234', '123')
       .then(res => {
         expect(res.response.status).to.equal(403);
@@ -85,23 +85,37 @@ describe('getArtistEvents', () => {
 // @todo write tests for mhs_bandsintown main function
 describe('mhs_bandsintown (main function)', () => {
 
-  beforeEach(()=>{
+  beforeEach(()=> {
     nock('https://rest.bandsintown.com')
       .get('/artists/A%20Wilhelm%20Scream/events')
       .query(true)
       .reply(200, api_response.hasEvents());
-  })
+  });
 
   it('Should fail if no artistId is supplied', () => {
     expect(testMe.mhs_bandsintown()).to.equal('Artist ID is required');
   });
 
   it('Should succeed if no appID is supplied - random string is generated', () => {
-    return testMe.mhs_bandsintown('A Wilhelm Scream').then((res)=>{
+
+    return testMe.mhs_bandsintown('A Wilhelm Scream').then((res)=> {
       expect(typeof(res.data)).to.equal('object');
       expect(res.data[0].hasOwnProperty('id')).to.be.true;
       expect(res.data[0]['artist_id']).to.equal('2121');
     })
   });
 
-});
+  it('Should return a string if unknown artistId is supplied', () => {
+    nock('https://rest.bandsintown.com')
+      .get('/artists/234234/events')
+      .query(true)
+      .reply(403, api_response.unknownArtist());
+
+    return testMe.mhs_bandsintown('234234').then((res)=> {
+      console.log(res)
+      expect(typeof(res.data)).to.equal('string');
+
+    })
+
+  })
+})

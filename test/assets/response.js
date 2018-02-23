@@ -285,7 +285,7 @@ module.exports = {
       }
     ]
   },
-  unkownArtist() {
+  unknownArtist() {
     return {"errors": ["Unknown Artist"]}
   },
   noEvents() {
