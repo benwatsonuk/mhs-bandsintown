@@ -90,6 +90,7 @@ describe('mhs_bandsintown (main function)', () => {
     });
 
     it('Should fail if no artistId is supplied', () => {
+        console.log(testMe.mhs_bandsintown());
         expect(testMe.mhs_bandsintown()).to.equal('Artist ID is required');
     });
 

@@ -62,25 +62,40 @@ module.exports = {
         if (!artistName) return 'artistName is required';
         if (!appId) return 'appId is required';
         let apiUrl = "https://rest.bandsintown.com/artists/" + artistName + "/events?app_id=" + appId;
-        return this.getAxiosApi(apiUrl)
+        return new Promise(resolve => {
+            resolve(this.getAxiosApi(apiUrl))
+        })
     },
 
 
     mhs_bandsintown: function (artistName, appId) {
-        if (artistName == null) return 'Artist ID is required';
+        if (!artistName) {
+            return 'Artist ID is required';
+        }
         appId = appId || this.makeAppId();
 
         let theResponse = null;
 
-        return this.getArtistEvents(artistName, appId).then((res) => {
-            if (res.status === 200 && res.data) {
-                theResponse = res
-            } else if (res.response.status === 403) {
-                theResponse = 'Artist is not registered with BandsInTown'
-            }
-        }).then(() => {
-            return theResponse
-        });
+        const result = this.getArtistEvents(artistName, appId);
+
+        if (result.status === 200 && result.data) {
+            theResponse = result
+        } else if (result.response.status === 403) {
+            theResponse = 'Artist is not registered with BandsInTown'
+        }
+
+
+        // .then((res) => {
+        //     if (res.status === 200 && res.data) {
+        //         theResponse = res
+        //     } else if (res.response.status === 403) {
+        //         theResponse = 'Artist is not registered with BandsInTown'
+        //     }
+        // }).then(() => {
+        //     return theResponse
+        // });
+
+        return theResponse
 
         // @todo respond with error if unknown artist is supplied
         // @todo return JSON if instructed
