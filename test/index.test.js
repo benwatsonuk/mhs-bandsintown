@@ -112,8 +112,19 @@ describe('mhs_bandsintown (main function)', () => {
             .reply(403, api_response.unknownArtist());
 
         return testMe.mhs_bandsintown('234234').then((res) => {
+            console.log(res)
             expect(typeof(res)).to.equal('string');
             expect(res).to.equal('Artist is not registered with BandsInTown');
+        })
+
+    })
+
+    it('Should succeed if artistId and appId is passed through', () => {
+
+        return testMe.mhs_bandsintown('A Wilhelm Scream', 'AWS').then((res) => {
+            expect(typeof(res.data)).to.equal('object');
+            expect(res.data[0].hasOwnProperty('id')).to.be.true;
+            expect(res.data[0]['artist_id']).to.equal('2121');
         })
 
     })
